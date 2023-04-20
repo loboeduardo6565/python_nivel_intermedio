@@ -157,19 +157,18 @@ def modificar(var_name, var_categoria, var_cantidad, var_desc, var_precio, tree)
    else:
        messagebox.showerror("Error", "Debe agregar la información a modificar en cada campo")
 
-#def borrar(tree):
-#    """ Función que permite borrar un registro de la BD posicionandose en el mismo desde el treeview """
-#
-#    item = tree.focus()
-#    if item:
-#        item_id = tree.item(tree.selection())['text']
-#        cursor = conn.cursor()
-#        cursor.execute("DELETE FROM REPUESTOS WHERE PRODUCT_ID=?", (item_id,)) # La coma la agregamos ya que el item_id es un entero, pero está representado dentro de una tupla
-#        conn.commit()
-#        print(f"Borrando el registro con el Product_ID {item_id} de la BD")
-#        tree.delete(item)
-#        print("Limpiando el registro del Treeview")
-#        borrando_msj()
-#        limpiar()
-#    else:
-#        messagebox.showinfo("Información", "Se debe seleccionar un registro") 
+def borrar(tree):
+    """ Función que permite borrar un registro de la BD posicionandose en el mismo desde el treeview """
+
+    item = tree.focus()
+    if item:
+        item_id = tree.item(tree.selection())['text']
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM REPUESTOS WHERE PRODUCT_ID=?", (item_id,)) # La coma la agregamos ya que el item_id es un entero, pero está representado dentro de una tupla
+        conn.commit()
+        print(f"Borrando el registro con el Product_ID {item_id} de la BD")
+        tree.delete(item)
+        print("Limpiando el registro del Treeview")
+        #borrando_msj()        
+    else:
+        messagebox.showinfo("Información", "Se debe seleccionar un registro") 
