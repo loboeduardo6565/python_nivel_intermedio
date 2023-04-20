@@ -36,10 +36,9 @@ Definición de todas las funciones que se utilizaran.
 
 """
 
-# def validacion(var_name, var_cantidad, var_desc):
-#    """ Función que permite validar que los campos implicados no se encuentren vacíos. """
-#
-#    return len(var_name.get()) != 0 and int(var_cantidad.get()) != 0  and len(var_desc.get()) != 0
+def validacion(var_name, var_cantidad, var_desc):
+   """ Función que permite validar que los campos implicados no se encuentren vacíos. """
+   return len(var_name) != 0 and int(var_cantidad) != 0  and len(var_desc) != 0
 #       
 # def agregar_01():
 #    """ Inicialmente hace un llamado a la función validación y luego de validar 
@@ -99,17 +98,17 @@ Definición de todas las funciones que se utilizaran.
 # def limpiar(var_name, var_categoria, var_cantidad, var_desc, var_precio):
 #     """ Función que permite limpiar los campos de ingreso"""
 # 
-#     var_name.set("")
-#     var_categoria.set("")
-#     var_cantidad.set(0)
-#     var_desc.set("")
-#     var_precio.set(0)
+#    var_name.set("")
+#    var_categoria.set("")
+#    var_cantidad.set(0)
+#    var_desc.set("")
+#    var_precio.set(0)
 
-# def limpiar_tree(tree):
-#    """ Función que permite limpiar el treeview"""
-#
-#    for content in tree.get_children():
-#        tree.delete(content)
+def limpiar_tree(tree):
+    """ Función que permite limpiar el treeview"""
+
+    for content in tree.get_children():
+        tree.delete(content)
 
 
 
@@ -121,43 +120,44 @@ def consultar(comboCategoria, arbol):
     print("Limpiando el treeview")
     cursor = conn.cursor()
     categoria=[comboCategoria,] # No está trayendo el parametro desde la vista 
-    cursor.execute("SELECT * FROM REPUESTOS WHERE CATEGORIA=?",categoria)
+    print(categoria)
+    cursor.execute("SELECT * FROM REPUESTOS WHERE CATEGORIA=?", categoria)
     consulta = cursor.fetchall()
+    print(consulta)
     for registro in consulta:
         #print("No llega aqui")
         print(registro)
         arbol.insert("","end", text = registro[0], values=(registro[1], registro[2], registro[3], registro[5],registro[4]))
     #limpiar()
 
-# def modificar(tree, var_name, var_categoria, var_cantidad, var_desc, var_precio):
-#    """ Función que permite modificar los datos de un registro existente posicionandose en el registro que quiere modificar """
-#
-#    if validacion():
-#        item = tree.focus()
-#        if item:
-#            item_id = tree.item(tree.selection())['text']        
-#            cursor = conn.cursor()
-#            repuestos = [
-#                (var_name.get()), 
-#                (var_categoria.get()), 
-#                (var_cantidad.get()),
-#                (var_precio.get()),
-#                (var_desc.get()),
-#                item_id,
-#                ]
-#            cursor.execute("UPDATE REPUESTOS SET NOMBRE = ?, CATEGORIA = ?, CANTIDAD = ?, PRECIO = ?, DESC = ? WHERE PRODUCT_ID=?", repuestos)
-#            conn.commit()
-#            print(f"Modificando el registro con el Product_ID {item_id} de la BD")
-#            tree.get_children()
-#            messagebox.showinfo("Información", "Se ha modificado el registro seleccionado") 
-#            consultar()
-#            limpiar()
-#        else:
-#            messagebox.showerror("Error", "Debe posicionarse en el item a modificar") 
-#    else:
-#        messagebox.showerror("Error", "Debe agregar la información a modificar en cada campo")
+def modificar(var_name, var_categoria, var_cantidad, var_desc, var_precio, tree):
+   """ Función que permite modificar los datos de un registro existente posicionandose en el registro que quiere modificar """
+   if validacion(var_name, var_cantidad, var_desc):
+       item = tree.focus()
+       if item:
+           item_id = tree.item(tree.selection())['text']        
+           cursor = conn.cursor()
+           repuestos = [
+               var_name, 
+               var_categoria, 
+               var_cantidad,
+               var_precio,
+               var_desc,
+               item_id,
+               ]
+           cursor.execute("UPDATE REPUESTOS SET NOMBRE = ?, CATEGORIA = ?, CANTIDAD = ?, PRECIO = ?, DESC = ? WHERE PRODUCT_ID=?", repuestos)
+           conn.commit()
+           print(f"Modificando el registro con el Product_ID {item_id} de la BD")
+           tree.get_children()
+           messagebox.showinfo("Información", "Se ha modificado el registro seleccionado") 
+           #consultar()
+           #limpiar()
+       else:
+           messagebox.showerror("Error", "Debe posicionarse en el item a modificar") 
+   else:
+       messagebox.showerror("Error", "Debe agregar la información a modificar en cada campo")
 
-# def borrar(tree):
+#def borrar(tree):
 #    """ Función que permite borrar un registro de la BD posicionandose en el mismo desde el treeview """
 #
 #    item = tree.focus()
