@@ -124,16 +124,35 @@ Se agregan los botones del CRUD
 
 """
 
+def limpiar():
+    """ Función que permite limpiar los campos de ingreso"""
+    var_name.set("")
+    var_categoria.set("")
+    var_cantidad.set(0)
+    var_desc.set("")
+    var_precio.set(0)
+
+def funciones_consultar():
+    model.consultar(comboCategoria.get(), tree)    
+    limpiar()
+    #model.limpiar(var_name.get(), var_categoria.get(), var_cantidad.get(), var_desc.get(), var_precio.get())
+
+def funciones_modificar():
+    model.validacion(var_name.get(), var_cantidad.get(), var_desc.get())
+    model.modificar(var_name.get(), comboCategoria.get(), var_cantidad.get(), var_desc.get(), var_precio.get(), tree)
+    limpiar()
+    model.limpiar_tree(tree)
+    model.consultar(comboCategoria.get(), tree)
 
 
-#boton_a = Button(segmento3, text= "Agregar", command=modelo.agregar_01, width=10, height=1)
+#boton_a = Button(segmento3, text= "Agregar", command=model.agregar_01, width=10, height=1, state=DISABLED)
 #boton_a.grid(row= 0, column=0, padx=7, pady=20)
-boton_c = Button(segmento3, text= "Consultar", command=lambda:model.consultar(comboCategoria.get(), tree), width=10, height=1, )
+boton_c = Button(segmento3, text= "Consultar", command=lambda:funciones_consultar(), width=10, height=1)
 boton_c.grid(row= 0, column=1, padx=7, pady=20)
-#boton_u = Button(segmento3, text= "Modificar", command=modelo.modificar, width=10, height=1) #, state=DISABLED
-#boton_u.grid(row= 0, column=2, padx=7, pady=20)
-#boton_m = Button(segmento3, text= "Borrar", command=modelo.borrar, width=10, height=1) #, state=DISABLED
-#boton_m.grid(row= 0, column=3, padx=7, pady=20)
+boton_u = Button(segmento3, text= "Modificar", command=lambda:funciones_modificar(), width=10, height=1) #, state=DISABLED
+boton_u.grid(row= 0, column=2, padx=7, pady=20)
+boton_m = Button(segmento3, text= "Borrar", command=lambda:model.borrar(tree), width=10, height=1, state=DISABLED) #, state=DISABLED
+boton_m.grid(row= 0, column=3, padx=7, pady=20)
 
 # ---------------------------- Segmento 4 ----------------------------
 
