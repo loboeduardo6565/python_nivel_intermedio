@@ -1,7 +1,6 @@
 
-from tkinter import *
+#from tkinter import *
 import sqlite3
-from tkinter import messagebox
 import re
 
 """
@@ -39,70 +38,57 @@ Definición de todas las funciones que se utilizaran.
 def validacion(var_name, var_cantidad, var_desc):
    """ Función que permite validar que los campos implicados no se encuentren vacíos. """
    return len(var_name) != 0 and int(var_cantidad) != 0  and len(var_desc) != 0
-#       
-# def agregar_01():
-#    """ Inicialmente hace un llamado a la función validación y luego de validar 
-#    
-#    el valor correspondiente al campo de precio agregar un nuevo registro a la BD
-#    
-#    """
-#
-#    if validacion():
-#        # Generando la Instrucción en pasos. 
-#        cursor = conn.cursor()
-#        
-#        patron1 = re.compile(
-#        r"""\d +  # Parte entera
-#                       \.    # Punto decimal
-#                       \d *  # Parte de fracción""",
-#        re.X,
-#        )
-#
-#        precio = precio.get()
-#        if patron1.search(precio):
-#            var_name=var_name.get()
-#            var_categoria=var_categoria.get()
-#            var_cantidad=var_cantidad.get()
-#            var_precio=var_precio.get()
-#            var_desc=var_desc.get()
-#            repuestos = [
-#            (var_name.get()), 
-#            (var_categoria.get()), 
-#            (var_cantidad.get()),
-#            (var_precio.get()),
-#            (var_desc.get()),
-#            ]
-#            cursor.execute("INSERT INTO REPUESTOS VALUES (NULL,?,?,?,?,?)", repuestos) # NOMBRE CATEGORIA CANTIDAD PRECIO DESC
-#            conn.commit() #Guardando el registro
-#            agregar()
-#            limpiar()
-#            agregar_msj()
-#        else:
-#            messagebox.showerror("Error en campo Precio", "Debe ingresar el monto con decimales")
-#            print(type(precio))
-#            print(patron1.search(precio))
-#    else:
-#        messagebox.showerror("Error", "Debe agregar la información de cada campo") 
-#
-# def agregar_msj():
-#    messagebox.showinfo("Información", "Se ha guardado un nuevo registro") 
-#
-# def borrando_msj():
-#    messagebox.showerror("Repuesto Borrado", "Se ha borrado el registro seleccionado") 
-#
-# def agregar(tree,var_name, var_categoria, var_cantidad, var_desc, var_precio):
-#    """ Función que permite llenar el treeview """
-#
-#    tree.insert("","end", text=str(product_id), values=(var_name.get(), var_categoria.get(), var_cantidad.get(), var_desc.get(), var_precio.get()))
+      
+def agregar_01(var_name, var_categoria, var_cantidad, var_desc, var_precio, tree):
+   """ Inicialmente hace un llamado a la función validación y luego de validar 
+   
+   el valor correspondiente al campo de precio agregar un nuevo registro a la BD
+   
+   """
+   if validacion(var_name, var_cantidad, var_desc):
+       # Generando la Instrucción en pasos. 
+       cursor = conn.cursor()
+       
+       patron1 = re.compile(
+       r"""\d +  # Parte entera
+                      \.    # Punto decimal
+                      \d *  # Parte de fracción""",
+       re.X,
+       )
+       precio = str(var_precio)
+       if patron1.search(precio):
+           var_name=var_name
+           var_categoria=var_categoria
+           var_cantidad=var_cantidad
+           var_precio=var_precio
+           var_desc=var_desc
+           repuestos = [
+           (var_name), 
+           (var_categoria), 
+           (var_cantidad),
+           (var_precio),
+           (var_desc),
+           ]
+           cursor.execute("INSERT INTO REPUESTOS VALUES (NULL,?,?,?,?,?)", repuestos) # NOMBRE CATEGORIA CANTIDAD PRECIO DESC
+           conn.commit() #Guardando el registro
+           tree.insert("","end", text=str(product_id), values=(var_name, var_categoria, var_cantidad, var_desc, var_precio))
+           #limpiar()
+           #agregar_msj()
+       else:
+           #messagebox.showerror("Error en campo Precio", "Debe ingresar el monto con decimales")
+           print("Error en campo Precio, Debe ingresar el monto con decimales")
+           print(type(precio))
+           print(patron1.search(precio))
+   else:
+       #messagebox.showerror("Error al agregar", "Debe agregar la información de cada campo") 
+       print("Error al agregar, Debe agregar la información de cada campo")     
 
-# def limpiar(var_name, var_categoria, var_cantidad, var_desc, var_precio):
-#     """ Función que permite limpiar los campos de ingreso"""
-# 
-#    var_name.set("")
-#    var_categoria.set("")
-#    var_cantidad.set(0)
-#    var_desc.set("")
-#    var_precio.set(0)
+# def borrando_msj():
+#   messagebox.showerror("Repuesto Borrado", "Se ha borrado el registro seleccionado") 
+
+def agregar(var_name, var_categoria, var_cantidad, var_desc, var_precio, tree):
+   """ Función que permite llenar el treeview """
+   tree.insert("","end", text=str(product_id), values=(var_name.get(), var_categoria.get(), var_cantidad.get(), var_desc.get(), var_precio.get()))
 
 def limpiar_tree(tree):
     """ Función que permite limpiar el treeview"""
@@ -149,13 +135,16 @@ def modificar(var_name, var_categoria, var_cantidad, var_desc, var_precio, tree)
            conn.commit()
            print(f"Modificando el registro con el Product_ID {item_id} de la BD")
            tree.get_children()
-           messagebox.showinfo("Información", "Se ha modificado el registro seleccionado") 
+           print("Información, Se ha modificado el registro seleccionado")
+           #messagebox.showinfo("Información", "Se ha modificado el registro seleccionado") 
            #consultar()
            #limpiar()
        else:
-           messagebox.showerror("Error", "Debe posicionarse en el item a modificar") 
+           #messagebox.showerror("Error", "Debe posicionarse en el item a modificar") 
+           print("Error, Debe posicionarse en el item a modificar") 
    else:
-       messagebox.showerror("Error", "Debe agregar la información a modificar en cada campo")
+       #messagebox.showerror("Error", "Debe agregar la información a modificar en cada campo")
+       print("Error, Debe agregar la información a modificar en cada campo")
 
 def borrar(tree):
     """ Función que permite borrar un registro de la BD posicionandose en el mismo desde el treeview """
@@ -171,4 +160,5 @@ def borrar(tree):
         print("Limpiando el registro del Treeview")
         #borrando_msj()        
     else:
-        messagebox.showinfo("Información", "Se debe seleccionar un registro") 
+        #messagebox.showinfo("Información", "Se debe seleccionar un registro")
+        print("Información, Se debe seleccionar un registro")
